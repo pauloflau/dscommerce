@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +20,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String description;
+	@Column(unique = true)
+	private String email;
 	private String phone;
 	private LocalDate birthDate;
 	private String password;
@@ -31,11 +33,11 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(Long id, String name, String description, String phone, LocalDate birthDate, String password) {
+	public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
+		this.email = email;
 		this.phone = phone;
 		this.birthDate = birthDate;
 		this.password = password;
@@ -58,11 +60,11 @@ public class User {
 	}
 
 	public String getDescription() {
-		return description;
+		return email;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.email = description;
 	}
 
 	public String getPhone() {
