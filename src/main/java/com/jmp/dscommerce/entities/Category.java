@@ -18,7 +18,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private OrderStatus status;
+	//private OrderStatus status;
 
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
@@ -26,11 +26,11 @@ public class Category {
 	public Category() {
 	}
 
-	public Category(Long id, String name, OrderStatus status) {
+	public Category(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.status = status;
+		
 	}
 
 	public Long getId() {
@@ -49,14 +49,7 @@ public class Category {
 		this.name = name;
 	}
 
-	public OrderStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(OrderStatus status) {
-		this.status = status;
-	}
-
+	
 	public Set<Product> getProducts() {
 		return products;
 	}
