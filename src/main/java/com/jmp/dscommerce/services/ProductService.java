@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +23,15 @@ public class ProductService {
 	private ProductRepository repository;
 
 	@Transactional(readOnly = true)
-	public List<ProductDto> findAll() {
-		List<Product> result = repository.findAll();
+	public Page<ProductDto> findAll(Pageable pageable) {
+		Page<Product> result = repository.findAll(pageable);
 		List<ProductDto> dto = new ArrayList<>();
 		
 		for (Product item : result) {
 			ProductDto produtoDto = new ProductDto(item);
 			dto.add(produtoDto);
 		}
-		return dto;
+		return new PageImpl<>(dto, pageable, result.getTotalElements());
 	}
 	
 	@Transactional(readOnly=true)
