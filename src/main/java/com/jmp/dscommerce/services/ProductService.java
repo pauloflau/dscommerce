@@ -15,13 +15,26 @@ import com.jmp.dscommerce.dtos.ProductDto;
 import com.jmp.dscommerce.entities.Product;
 import com.jmp.dscommerce.repositories.ProductRepository;
 
-
 @Service
 public class ProductService {
 	
 	@Autowired
 	private ProductRepository repository;
 
+	@Transactional
+	public ProductDto insert(ProductDto dto) {
+		Product entity = new Product();
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setPrice(dto.getPrice());
+		entity.setImgUrl(dto.getImgUrl());
+		
+		entity = repository.save(entity);
+		
+		return 	new ProductDto(entity);
+		
+	}
+	
 	@Transactional(readOnly = true)
 	public Page<ProductDto> findAll(Pageable pageable) {
 		Page<Product> result = repository.findAll(pageable);
