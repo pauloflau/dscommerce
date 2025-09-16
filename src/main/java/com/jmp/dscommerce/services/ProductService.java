@@ -21,14 +21,19 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 
+
+	@Transactional
+	public void delete(Long id) {
+		repository.deleteById(id);		
+	}
+	
 	@Transactional
 	public ProductDto update(Long id, ProductDto dto) {
 		Product entity = repository.getReferenceById(id);
 		copyDtoToEntity(dto, entity);		
 		entity = repository.save(entity);
 		
-		return 	new ProductDto(entity);
-		
+		return 	new ProductDto(entity);		
 	}
 	
 	
