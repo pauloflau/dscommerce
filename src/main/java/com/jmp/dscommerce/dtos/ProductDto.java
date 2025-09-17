@@ -2,11 +2,25 @@ package com.jmp.dscommerce.dtos;
 
 import com.jmp.dscommerce.entities.Product;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class ProductDto {
 
 	private Long id;
+	
+	@NotBlank(message="campo requerido")
+	@Size(min=3, max=80, message="campo deve ter entre 3 e 80 caracteres")
 	private String name;
+
+	@NotBlank(message="campo requerido")
+	@Size(min=10, message="campo deve ter no minimo 10 caracteres")
 	private String description;
+	
+	@NotNull(message="campo requerido")
+	@Positive(message = "o campo deve ser positivo")
 	private Double price;
 	private String imgUrl;
 	
@@ -49,8 +63,5 @@ public class ProductDto {
 
 	public String getImgUrl() {
 		return imgUrl;
-	}
-	
-	
-	
+	}	
 }
