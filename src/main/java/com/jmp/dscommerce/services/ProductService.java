@@ -26,6 +26,15 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 
+	public Page<ProductDto> findAll(String name, Pageable pageable){
+		Page<Product> result;
+		if(name==null || name.isEmpty()) {
+			result = repository.findAll(pageable);
+		}else {
+			result = repository.searchByName(name, pageable);
+		}
+		return result.map(ProductDto::new);
+	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)	
 	public void delete(Long id) {
