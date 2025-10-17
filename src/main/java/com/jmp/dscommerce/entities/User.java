@@ -2,19 +2,24 @@ package com.jmp.dscommerce.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="tb_user")
+@Table(name = "tb_user")
 public class User {
 
 	@Id
@@ -26,10 +31,14 @@ public class User {
 	private String phone;
 	private LocalDate birthDate;
 	private String password;
-	
-	@OneToMany(mappedBy="client")
+
+	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
-	
+
+	@ManyToMany
+	@JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
@@ -60,12 +69,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getDescription() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setDescription(String description) {
-		this.email = description;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPhone() {
@@ -92,6 +101,27 @@ public class User {
 		this.password = password;
 	}
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void addRole(Role role) {
+		roles.add(role);
+	}
+
+	public boolean hasRole(String roleName) {
+		for (Role role: roles) {
+			if (role.getAuthority().equals(roleName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -108,5 +138,4 @@ public class User {
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-	
 }
