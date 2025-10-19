@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jmp.dscommerce.dtos.ProductDto;
+import com.jmp.dscommerce.dtos.ProductMinDto;
 import com.jmp.dscommerce.entities.Product;
 import com.jmp.dscommerce.repositories.ProductRepository;
 import com.jmp.dscommerce.services.exceptions.DatabaseException;
@@ -26,14 +27,14 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 
-	public Page<ProductDto> findAll(String name, Pageable pageable){
+	public Page<ProductMinDto> findAll(String name, Pageable pageable){
 		Page<Product> result;
 		if(name==null || name.isEmpty()) {
 			result = repository.findAll(pageable);
 		}else {
 			result = repository.searchByName(name, pageable);
 		}
-		return result.map(ProductDto::new);
+		return result.map(ProductMinDto::new);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)	
