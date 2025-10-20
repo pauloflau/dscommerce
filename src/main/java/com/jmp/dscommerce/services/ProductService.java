@@ -21,7 +21,9 @@ import com.jmp.dscommerce.repositories.ProductRepository;
 import com.jmp.dscommerce.services.exceptions.DatabaseException;
 import com.jmp.dscommerce.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class ProductService {
@@ -29,6 +31,8 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	
+	@PersistenceContext
+	private EntityManager entityManager;
 	
 	public Page<ProductMinDto> findAll(String name, Pageable pageable){
 		Page<Product> result;
@@ -112,8 +116,7 @@ public class ProductService {
 		
 		//entity.getCategories().clear();
 		for(CategoryDto catDto : dto.getCategories()) {
-			Category cat = new Category();
-			cat.setId(catDto.getId());
+			Category cat = entityManager.getReference(Category.class, catDto.getId());
 			entity.getCategories().add(cat);
 		}
 	}
