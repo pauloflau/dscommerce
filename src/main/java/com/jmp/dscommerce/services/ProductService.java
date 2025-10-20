@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jmp.dscommerce.dtos.CategoryDto;
 import com.jmp.dscommerce.dtos.ProductDto;
 import com.jmp.dscommerce.dtos.ProductMinDto;
+import com.jmp.dscommerce.entities.Category;
 import com.jmp.dscommerce.entities.Product;
 import com.jmp.dscommerce.repositories.ProductRepository;
 import com.jmp.dscommerce.services.exceptions.DatabaseException;
@@ -26,7 +28,8 @@ public class ProductService {
 	
 	@Autowired
 	private ProductRepository repository;
-
+	
+	
 	public Page<ProductMinDto> findAll(String name, Pageable pageable){
 		Page<Product> result;
 		if(name==null || name.isEmpty()) {
@@ -57,6 +60,7 @@ public class ProductService {
 		entity = repository.save(entity);
 		
 		return 	new ProductDto(entity);
+		
 		}catch(EntityNotFoundException e){
 			throw new ResourceNotFoundException("Recurso nao encontrado");
 		}
@@ -65,12 +69,17 @@ public class ProductService {
 	
 	@Transactional
 	public ProductDto insert(ProductDto dto) {
+
+		
 		Product entity = new Product();
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
 		
-		return 	new ProductDto(entity);
+		 entity = repository.findById(entity.getId())
+		            .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+
 		
+		return 	new ProductDto(entity);		
 	}
 	
 	@Transactional(readOnly = true)
@@ -99,6 +108,13 @@ public class ProductService {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setPrice(dto.getPrice());
-		entity.setImgUrl(dto.getImgUrl());
+		entity.setImgUrl(dto.getImgUrl()); 
+		
+		//entity.getCategories().clear();
+		for(CategoryDto catDto : dto.getCategories()) {
+			Category cat = new Category();
+			cat.setId(catDto.getId());
+			entity.getCategories().add(cat);
+		}
 	}
 }
