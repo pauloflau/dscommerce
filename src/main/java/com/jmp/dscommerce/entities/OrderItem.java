@@ -15,6 +15,10 @@ public class OrderItem {
 
 	private Integer quantity;
 	private Double price;
+	
+	public OrderItem() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		id.setOrder(order);
