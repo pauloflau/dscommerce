@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.jmp.dscommerce.dtos.CustomError;
 import com.jmp.dscommerce.dtos.ValidationError;
 import com.jmp.dscommerce.services.exceptions.DatabaseException;
+import com.jmp.dscommerce.services.exceptions.ForbiddenException;
 import com.jmp.dscommerce.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,23 +20,34 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-	  @ExceptionHandler(MethodArgumentNotValidException.class)
-	  public ResponseEntity<CustomError> methodArgumentNotValid (MethodArgumentNotValidException e, HttpServletRequest request){
-		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-		ValidationError err = new ValidationError(Instant.now(),status.value(), "Dados invalidos", request.getRequestURI());
-		
-		for(FieldError f : e.getBindingResult().getFieldErrors()){
-			err.addError(f.getField(), f.getDefaultMessage());
-		}
-		
+	@ExceptionHandler(ForbiddenException.class)
+	public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(),
+				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-	  
+
+	
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<CustomError> methodArgumentNotValid(MethodArgumentNotValidException e,
+			HttpServletRequest request) {
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		ValidationError err = new ValidationError(Instant.now(), status.value(), "Dados invalidos",
+				request.getRequestURI());
+
+		for (FieldError f : e.getBindingResult().getFieldErrors()) {
+			err.addError(f.getField(), f.getDefaultMessage());
+		}
+
+		return ResponseEntity.status(status).body(err);
+	}
+
 	@ExceptionHandler(DatabaseException.class)
 	public ResponseEntity<CustomError> database(DatabaseException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(),
-				request.getRequestURI());
+		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
 
