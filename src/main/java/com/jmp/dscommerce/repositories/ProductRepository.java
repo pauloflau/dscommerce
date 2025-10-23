@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.jmp.dscommerce.entities.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long>{
-	@Query("SELECT obj FROM Product obj "
-			+ "WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))")
+public interface ProductRepository extends JpaRepository<Product, Long> {
+	@Query("SELECT obj FROM Product obj " + "WHERE UPPER(obj.name) LIKE UPPER(CONCAT('%', :name, '%'))")
 	Page<Product> searchByName(String name, Pageable pageable);
 }

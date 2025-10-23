@@ -7,7 +7,7 @@ import com.jmp.dscommerce.entities.Payment;
 public class CarrinhoPaymentDto {
 	private Long id;
 	private Instant moment;
-	
+
 	public CarrinhoPaymentDto() {
 		// TODO Auto-generated constructor stub
 	}

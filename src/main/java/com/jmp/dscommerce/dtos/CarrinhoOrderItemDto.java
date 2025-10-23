@@ -8,7 +8,7 @@ public class CarrinhoOrderItemDto {
 	private Double price;
 	private Integer quantity;
 	private String imgUrl;
-	
+
 	public CarrinhoOrderItemDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -45,7 +45,7 @@ public class CarrinhoOrderItemDto {
 	public Integer getQuantity() {
 		return quantity;
 	}
-	
+
 	public Double getSubTotal() {
 		return price * quantity;
 	}
@@ -53,5 +53,5 @@ public class CarrinhoOrderItemDto {
 	public String getImgUrl() {
 		return imgUrl;
 	}
-	
+
 }

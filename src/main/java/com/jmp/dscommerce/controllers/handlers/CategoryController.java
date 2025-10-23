@@ -12,14 +12,14 @@ import com.jmp.dscommerce.dtos.CategoryDto;
 import com.jmp.dscommerce.services.CategoryService;
 
 @RestController
-@RequestMapping(value="/categories")
+@RequestMapping(value = "/categories")
 public class CategoryController {
 
 	@Autowired
 	private CategoryService service;
-	
+
 	@GetMapping
-	public ResponseEntity<List<CategoryDto>> findAll(){
+	public ResponseEntity<List<CategoryDto>> findAll() {
 		List<CategoryDto> result = service.findAll();
 		return ResponseEntity.ok(result);
 	}

@@ -15,7 +15,7 @@ public class OrderItem {
 
 	private Integer quantity;
 	private Double price;
-	
+
 	public OrderItem() {
 		// TODO Auto-generated constructor stub
 	}
@@ -76,5 +76,4 @@ public class OrderItem {
 		return Objects.equals(id, other.id);
 	}
 
-	
 }

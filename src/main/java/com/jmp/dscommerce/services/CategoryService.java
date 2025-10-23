@@ -14,15 +14,15 @@ import com.jmp.dscommerce.repositories.CategoryRepository;
 public class CategoryService {
 	@Autowired
 	private CategoryRepository repository;
-	
-	public List<CategoryDto> findAll(){
+
+	public List<CategoryDto> findAll() {
 		List<Category> result = repository.findAll();
 		List<CategoryDto> dtos = new ArrayList<>();
-		
-		for(Category cat : result) {
+
+		for (Category cat : result) {
 			dtos.add(new CategoryDto(cat));
 		}
-		
+
 		return dtos;
 	}
 }

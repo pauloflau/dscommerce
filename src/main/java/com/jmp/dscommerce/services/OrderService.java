@@ -22,50 +22,50 @@ import com.jmp.dscommerce.services.exceptions.ResourceNotFoundException;
 public class OrderService {
 	@Autowired
 	private OrderRepository repository;
-	
+
 	@Autowired
 	private ProductRepository produtoRepository;
-	
+
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private AuthService authService;
-	
+
 	@Transactional(readOnly = true)
 	public CarrinhoOrderDto findById(Long id) {
 		Order order = repository.findById(id)
-			.orElseThrow(() -> new ResourceNotFoundException("Recurso nao encontrado"));
-		
+				.orElseThrow(() -> new ResourceNotFoundException("Recurso nao encontrado"));
+
 		authService.validateSelfOrAdmin(order.getClient().getId());
-		
+
 		return new CarrinhoOrderDto(order);
 	}
-	
+
 	@Transactional
 	public CarrinhoOrderDto insert(CarrinhoOrderDto dto) {
-		
-		Order order = new Order(); 
+
+		Order order = new Order();
 		order.setMoment(Instant.now());
 		order.setStatus(OrderStatus.WAITING_PAYMENT);
-		
+
 		User user = userService.authenticated();
-		
+
 		order.setClient(user);
 
-		for(CarrinhoOrderItemDto orderItemDto : dto.getItems()) {
-			Product product = produtoRepository.getReferenceById (orderItemDto.getProductId());
+		for (CarrinhoOrderItemDto orderItemDto : dto.getItems()) {
+			Product product = produtoRepository.getReferenceById(orderItemDto.getProductId());
 			OrderItem item = new OrderItem(order, product, orderItemDto.getQuantity(), product.getPrice());
 			order.getItems().add(item);
 		}
 
 		repository.save(order);
-		
+
 		orderItemRepository.saveAll(order.getItems());
-		
+
 		return new CarrinhoOrderDto(order);
 	}
 }

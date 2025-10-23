@@ -23,9 +23,9 @@ public class UserDto {
 		email = entity.getEmail();
 		phone = entity.getPhone();
 		birthDate = entity.getBirthDate();
-		for(GrantedAuthority role: entity.getRoles()) {
+		for (GrantedAuthority role : entity.getRoles()) {
 			roles.add(role.getAuthority());
-		}		
+		}
 	}
 
 	public Long getId() {
@@ -75,7 +75,5 @@ public class UserDto {
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
-	
-	
-	
+
 }

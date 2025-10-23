@@ -15,23 +15,23 @@ import jakarta.validation.constraints.Size;
 public class ProductDto {
 
 	private Long id;
-	
-	@NotBlank(message="campo requerido")
-	@Size(min=3, max=80, message="campo deve ter entre 3 e 80 caracteres")
+
+	@NotBlank(message = "campo requerido")
+	@Size(min = 3, max = 80, message = "campo deve ter entre 3 e 80 caracteres")
 	private String name;
 
-	@NotBlank(message="campo requerido")
-	@Size(min=10, message="campo deve ter no minimo 10 caracteres")
+	@NotBlank(message = "campo requerido")
+	@Size(min = 10, message = "campo deve ter no minimo 10 caracteres")
 	private String description;
-	
-	@NotNull(message="campo requerido")
+
+	@NotNull(message = "campo requerido")
 	@Positive(message = "o campo deve ser positivo")
 	private Double price;
 	private String imgUrl;
-	
+
 	@NotEmpty(message = "Deve ter pelo menos uma categoria")
 	private List<CategoryDto> categories = new ArrayList<>();
-	
+
 	public ProductDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -43,18 +43,18 @@ public class ProductDto {
 		this.price = price;
 		this.imgUrl = imgUrl;
 	}
-	
+
 	public ProductDto(Product entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.description = entity.getDescription();
 		this.price = entity.getPrice();
 		this.imgUrl = entity.getImgUrl();
-		for(Category cat: entity.getCategories()) {
+		for (Category cat : entity.getCategories()) {
 			categories.add(new CategoryDto(cat));
 		}
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -77,5 +77,5 @@ public class ProductDto {
 
 	public List<CategoryDto> getCategories() {
 		return categories;
-	}		
+	}
 }

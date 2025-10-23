@@ -1,6 +1,5 @@
 package com.jmp.dscommerce.controllers;
 
-
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,26 +19,25 @@ import com.jmp.dscommerce.services.OrderService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value="/orders") 
+@RequestMapping(value = "/orders")
 public class OrderController {
 
 	@Autowired
 	private OrderService service;
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-	@GetMapping(value="/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<CarrinhoOrderDto> findById(@PathVariable Long id) {
-		CarrinhoOrderDto dto =  service.findById(id);
-		
-		return ResponseEntity.ok(dto);		
+		CarrinhoOrderDto dto = service.findById(id);
+
+		return ResponseEntity.ok(dto);
 	}
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CLIENT')")
 	@PostMapping
 	public ResponseEntity<CarrinhoOrderDto> insert(@Valid @RequestBody CarrinhoOrderDto dto) {
-		dto =  service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);		
+		dto = service.insert(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+		return ResponseEntity.created(uri).body(dto);
 	}
 }

@@ -12,7 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="tb_payment")
+@Table(name = "tb_payment")
 public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Payment {
 	@OneToOne
 	@MapsId
 	private Order order;
-	
+
 	public Payment() {
 	}
 
@@ -73,6 +73,5 @@ public class Payment {
 		Payment other = (Payment) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
+
 }

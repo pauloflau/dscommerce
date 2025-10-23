@@ -5,7 +5,7 @@ import com.jmp.dscommerce.entities.User;
 public class CarrinhoClientDto {
 	private Long id;
 	private String name;
-	
+
 	public CarrinhoClientDto() {
 		// TODO Auto-generated constructor stub
 	}

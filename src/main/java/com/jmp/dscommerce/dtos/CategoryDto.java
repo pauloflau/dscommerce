@@ -5,7 +5,7 @@ import com.jmp.dscommerce.entities.Category;
 public class CategoryDto {
 	private Long id;
 	private String name;
-	
+
 	public CategoryDto() {
 	}
 
@@ -13,7 +13,6 @@ public class CategoryDto {
 		this.id = id;
 		this.name = nome;
 	}
-	
 
 	public CategoryDto(Category entity) {
 		this.id = entity.getId();
@@ -34,5 +33,5 @@ public class CategoryDto {
 
 	public void setName(String name) {
 		this.name = name;
-	}	
+	}
 }

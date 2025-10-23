@@ -15,14 +15,14 @@ public class CarrinhoOrderDto {
 	private Long id;
 	private Instant moment;
 	private OrderStatus status;
-	
+
 	private CarrinhoClientDto client;
-	
+
 	private CarrinhoPaymentDto payment;
-	
+
 	@NotEmpty(message = "Deve ter pelo menos um item")
 	private List<CarrinhoOrderItemDto> items = new ArrayList<>();
-	
+
 	public CarrinhoOrderDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -42,16 +42,16 @@ public class CarrinhoOrderDto {
 		status = entity.getStatus();
 		client = new CarrinhoClientDto(entity.getClient());
 		payment = (entity.getPayment() == null) ? null : new CarrinhoPaymentDto(entity.getPayment());
-		
-		for(OrderItem item : entity.getItems()) {
+
+		for (OrderItem item : entity.getItems()) {
 			CarrinhoOrderItemDto itemDto = new CarrinhoOrderItemDto(item);
 			items.add(itemDto);
 		}
 	}
-	
+
 	public Double getTotal() {
 		double soma = 0.0;
-		for(CarrinhoOrderItemDto item : items) {
+		for (CarrinhoOrderItemDto item : items) {
 			soma = soma + item.getSubTotal();
 		}
 		return soma;
@@ -104,7 +104,5 @@ public class CarrinhoOrderDto {
 	public void setItems(List<CarrinhoOrderItemDto> items) {
 		this.items = items;
 	}
-	
-	
-	
+
 }

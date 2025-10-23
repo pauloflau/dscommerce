@@ -12,14 +12,14 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="tb_role")
-public class Role implements GrantedAuthority{
-	
+@Table(name = "tb_role")
+public class Role implements GrantedAuthority {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String authority;
-	
+
 	public Role() {
 	}
 
@@ -61,6 +61,5 @@ public class Role implements GrantedAuthority{
 		Role other = (Role) obj;
 		return Objects.equals(authority, other.authority);
 	}
-	
-	
+
 }

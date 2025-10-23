@@ -27,95 +27,92 @@ import jakarta.persistence.PersistenceContext;
 
 @Service
 public class ProductService {
-	
+
 	@Autowired
 	private ProductRepository repository;
-	
+
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	public Page<ProductMinDto> findAll(String name, Pageable pageable){
+
+	public Page<ProductMinDto> findAll(String name, Pageable pageable) {
 		Page<Product> result;
-		if(name==null || name.isEmpty()) {
+		if (name == null || name.isEmpty()) {
 			result = repository.findAll(pageable);
-		}else {
+		} else {
 			result = repository.searchByName(name, pageable);
 		}
 		return result.map(ProductMinDto::new);
 	}
 
-	@Transactional(propagation = Propagation.SUPPORTS)	
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public void delete(Long id) {
-		if(!repository.existsById(id)) {
+		if (!repository.existsById(id)) {
 			throw new ResourceNotFoundException("Recurso nao encontrado.");
 		}
 		try {
-			repository.deleteById(id);			
-		}catch(DataIntegrityViolationException e) {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Falha de integridade referencial.");
-		}		
+		}
 	}
-	
+
 	@Transactional
 	public ProductDto update(Long id, ProductDto dto) {
 		try {
-		Product entity = repository.getReferenceById(id);
-		copyDtoToEntity(dto, entity);		
-		entity = repository.save(entity);
-		
-		return 	new ProductDto(entity);
-		
-		}catch(EntityNotFoundException e){
+			Product entity = repository.getReferenceById(id);
+			copyDtoToEntity(dto, entity);
+			entity = repository.save(entity);
+
+			return new ProductDto(entity);
+
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Recurso nao encontrado");
 		}
 	}
-	
-	
+
 	@Transactional
 	public ProductDto insert(ProductDto dto) {
 
-		
 		Product entity = new Product();
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
-		
-		 entity = repository.findById(entity.getId())
-		            .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
-		
-		return 	new ProductDto(entity);		
+		entity = repository.findById(entity.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+
+		return new ProductDto(entity);
 	}
-	
+
 	@Transactional(readOnly = true)
 	public Page<ProductDto> findAll(Pageable pageable) {
 		Page<Product> result = repository.findAll(pageable);
 		List<ProductDto> dto = new ArrayList<>();
-		
+
 		for (Product item : result) {
 			ProductDto produtoDto = new ProductDto(item);
 			dto.add(produtoDto);
 		}
 		return new PageImpl<>(dto, pageable, result.getTotalElements());
 	}
-	
-	@Transactional(readOnly=true)
+
+	@Transactional(readOnly = true)
 	public ProductDto findById(Long id) {
-		Product product = repository.findById(id).orElseThrow(
-				()-> new ResourceNotFoundException("Recurso nao encontrado"));
-		
+		Product product = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Recurso nao encontrado"));
+
 		ProductDto dto = new ProductDto(product);
-		
+
 		return dto;
 	}
-	
+
 	private void copyDtoToEntity(ProductDto dto, Product entity) {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setPrice(dto.getPrice());
-		entity.setImgUrl(dto.getImgUrl()); 
-		
-		//entity.getCategories().clear();
-		for(CategoryDto catDto : dto.getCategories()) {
+		entity.setImgUrl(dto.getImgUrl());
+
+		// entity.getCategories().clear();
+		for (CategoryDto catDto : dto.getCategories()) {
 			Category cat = entityManager.getReference(Category.class, catDto.getId());
 			entity.getCategories().add(cat);
 		}

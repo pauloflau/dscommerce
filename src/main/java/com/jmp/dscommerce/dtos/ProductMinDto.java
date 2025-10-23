@@ -7,7 +7,7 @@ public class ProductMinDto {
 	private String name;
 	private Double price;
 	private String imgUrl;
-	
+
 	public ProductMinDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -18,7 +18,7 @@ public class ProductMinDto {
 		this.price = price;
 		this.imgUrl = imgUrl;
 	}
-	
+
 	public ProductMinDto(Product entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
@@ -41,6 +41,5 @@ public class ProductMinDto {
 	public String getImgUrl() {
 		return imgUrl;
 	}
-	
-	
+
 }

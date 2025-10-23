@@ -1,6 +1,5 @@
 package com.jmp.dscommerce.controllers;
 
-
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,49 +25,47 @@ import com.jmp.dscommerce.services.ProductService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value="/products") 
+@RequestMapping(value = "/products")
 public class ProductController {
 
 	@Autowired
 	ProductService service;
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@DeleteMapping(value="/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<ProductDto> delete(@PathVariable Long id) {
 		service.delete(id);
-		return ResponseEntity.noContent().build();		
+		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@PutMapping(value="/{id}")
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProductDto> update(@PathVariable Long id, @Valid @RequestBody ProductDto dto) {
 		dto = service.update(id, dto);
-		return ResponseEntity.ok(dto);		
+		return ResponseEntity.ok(dto);
 	}
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<ProductDto> insert(@Valid @RequestBody ProductDto dto) {
 		dto = service.insert(dto);
-		
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(dto.getId()).toUri();
-		
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+
 		return ResponseEntity.created(uri).body(dto);
 	}
-		
+
 	@GetMapping
-	public ResponseEntity<Page<ProductMinDto>> findAll(
-			@RequestParam(required=false) String name, Pageable pageable){
+	public ResponseEntity<Page<ProductMinDto>> findAll(@RequestParam(required = false) String name, Pageable pageable) {
 		Page<ProductMinDto> dto = service.findAll(name, pageable);
 		return ResponseEntity.ok(dto);
 	}
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-	@GetMapping(value="/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
-		ProductDto dto =  service.findById(id);
-		
-		return ResponseEntity.ok(dto);		
+		ProductDto dto = service.findById(id);
+
+		return ResponseEntity.ok(dto);
 	}
 }

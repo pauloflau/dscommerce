@@ -23,12 +23,9 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(ForbiddenException.class)
 	public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
 		HttpStatus status = HttpStatus.FORBIDDEN;
-		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(),
-				request.getRequestURI());
+		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-
-	
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<CustomError> methodArgumentNotValid(MethodArgumentNotValidException e,

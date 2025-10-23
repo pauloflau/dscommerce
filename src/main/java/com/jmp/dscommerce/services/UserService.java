@@ -41,22 +41,22 @@ public class UserService implements UserDetailsService {
 
 		return user;
 	}
-	
+
 	protected User authenticated() {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			
+
 			Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
 			String username = jwtPrincipal.getClaim("username");
-			
+
 			User user = repository.findByEmail(username).get();
 			return user;
-						
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			throw new UsernameNotFoundException("Email nao encontrado");
 		}
 	}
-	
+
 	@Transactional(readOnly = true)
 	public UserDto getMe() {
 		User user = authenticated();

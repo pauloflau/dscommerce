@@ -9,13 +9,13 @@ import jakarta.persistence.ManyToOne;
 @Embeddable
 public class OrderItemPK {
 	@ManyToOne
-	@JoinColumn(name="order_id")
+	@JoinColumn(name = "order_id")
 	private Order order;
-	
+
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name = "product_id")
 	private Product product;
-	
+
 	public OrderItemPK() {
 		// TODO Auto-generated constructor stub
 	}
@@ -52,6 +52,5 @@ public class OrderItemPK {
 		OrderItemPK other = (OrderItemPK) obj;
 		return Objects.equals(order, other.order) && Objects.equals(product, other.product);
 	}
-	
-	
+
 }

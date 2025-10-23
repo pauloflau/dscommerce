@@ -1,6 +1,7 @@
 package com.jmp.dscommerce.services.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException{
+@SuppressWarnings("serial")
+public class ResourceNotFoundException extends RuntimeException {
 
 	public ResourceNotFoundException(String msg) {
 		super(msg);

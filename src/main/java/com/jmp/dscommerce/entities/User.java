@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "tb_user")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,7 +120,7 @@ public class User implements UserDetails{
 	}
 
 	public boolean hasRole(String roleName) {
-		for (Role role: roles) {
+		for (Role role : roles) {
 			if (role.getAuthority().equals(roleName)) {
 				return true;
 			}
@@ -161,7 +161,7 @@ public class User implements UserDetails{
 	public boolean isAccountNonExpired() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
@@ -176,5 +176,5 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 }

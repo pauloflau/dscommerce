@@ -11,14 +11,14 @@ import com.jmp.dscommerce.dtos.UserDto;
 import com.jmp.dscommerce.services.UserService;
 
 @RestController
-@RequestMapping(value="/users")
+@RequestMapping(value = "/users")
 public class UserController {
 	@Autowired
 	private UserService service;
-	
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
-	@GetMapping(value="/me")
-	public ResponseEntity<UserDto> getMe(){
+	@GetMapping(value = "/me")
+	public ResponseEntity<UserDto> getMe() {
 		UserDto dto = service.getMe();
 		return ResponseEntity.ok(dto);
 	}
